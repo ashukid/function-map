@@ -88,7 +88,7 @@ while files.not_empty():
                 if(len(line.split("def "))>1):
                     break
                 fmap[fname].add_caller(current_file)
-                break
         f.close()
 
-print(list(fmap.keys()))
+for k in fmap.keys():
+    print(fmap[k].name,"-->",fmap[k].callers)
