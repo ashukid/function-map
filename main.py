@@ -1,6 +1,7 @@
 import os
 import glob
 import argparse
+import re
 
 def parse_arguments():
     parser=argparse.ArgumentParser()
@@ -18,7 +19,10 @@ class Function:
         self.definition=None
         self.name=None
         self.path=None
-        self.callers=[]
+        self.callers=set()
+
+    def add_caller(self,caller):
+        self.callers.add(caller)
 
 class Files:
     def __init__(self,parent_dir):
@@ -64,10 +68,27 @@ def get_function_map(args):
                 
     return fmap,files
 
-if __name__=="__main__":
-    args=parse_arguments()
-    if(args.parent_dir.endswith("/")):
-        args.parent_dir=args.parent_dir[:-1]
+args=parse_arguments()
+if(args.parent_dir.endswith("/")):
+    args.parent_dir=args.parent_dir[:-1]
 
-    fmap,files=get_function_map(args)
+fmap,files=get_function_map(args)
 
+while files.not_empty():
+
+    current_file=files.all_files.pop()
+    if(current_file.endswith(".py")):
+        f=open(current_file,"r")
+        lines=f.read().splitlines()
+        for line in lines:
+            for fname in list(fmap.keys()):
+                pattern=fname
+                if(not re.search(pattern,line)):
+                    continue
+                if(len(line.split("def "))>1):
+                    break
+                fmap[fname].add_caller(current_file)
+                break
+        f.close()
+
+print(list(fmap.keys()))
