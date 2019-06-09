@@ -11,7 +11,7 @@ The aim of this tool is to simply project understanding. This tool will create a
 Completed the first version of the code that displays all the functions and where they are called on
 terminal.
 
-run - `python main.py --parent_dir "directory_name"`
+run - `python main.py --parent_dir "full path of the directory"`
 
 
 #### TODO :
