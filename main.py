@@ -68,27 +68,39 @@ def get_function_map(args):
                 
     return fmap,files
 
-args=parse_arguments()
-if(args.parent_dir.endswith("/")):
-    args.parent_dir=args.parent_dir[:-1]
+def find_callers(fmap,files):
+    while files.not_empty():
 
-fmap,files=get_function_map(args)
+        current_file=files.all_files.pop()
+        if(current_file.endswith(".py")):
+            f=open(current_file,"r")
+            lines=f.read().splitlines()
+            for line in lines:
+                for fname in list(fmap.keys()):
+                    pattern=fname+"(.*)"
+                    if(not re.search(pattern,line)):
+                        continue
+                    if(len(line.split("def "))>1):
+                        break
+                    fmap[fname].add_caller(current_file)
+            f.close()
 
-while files.not_empty():
+def main():
+    args=parse_arguments()
+    if(args.parent_dir.endswith("/")):
+        args.parent_dir=args.parent_dir[:-1]
 
-    current_file=files.all_files.pop()
-    if(current_file.endswith(".py")):
-        f=open(current_file,"r")
-        lines=f.read().splitlines()
-        for line in lines:
-            for fname in list(fmap.keys()):
-                pattern=fname
-                if(not re.search(pattern,line)):
-                    continue
-                if(len(line.split("def "))>1):
-                    break
-                fmap[fname].add_caller(current_file)
-        f.close()
+    fmap,files=get_function_map(args)
+    find_callers(fmap,files)
+    for k in fmap.keys():
+        func=fmap[k]
+        print(func.name)
+        print(" "*4,func.path)
+        print(" "*4,func.definition)
 
-for k in fmap.keys():
-    print(fmap[k].name,"-->",fmap[k].callers)
+        for c in func.callers:
+            print(" "*8,"-->",c)
+
+
+if __name__=='__main__':
+    main()
