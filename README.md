@@ -1,8 +1,12 @@
 ## Function Mapper
 
-The aim of this project is to make a tool which will take as input a directory with many files, and
-tell me what are the functions in all those files and where they are called and display in multiple
-ways.
+Input :
+  Complete Path of the directory containing codes
+Output :
+  1. All the functions
+  2. Where they're called
+
+The aim of this tool is to simply project understanding. This tool will create a map with all the functions and where they're called, giving a overall overview of the project. Once we have the map, I personally found it very useful for understanding whole project and it simplifies as well as accelerates the whole process
 
 Completed the first version of the code that displays all the functions and where they are called on
 terminal.
