@@ -1,3 +1,5 @@
+import glob,os
+
 class Function:
     def __init__(self):
         self.definition=None
