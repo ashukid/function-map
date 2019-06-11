@@ -77,7 +77,7 @@ def find_callers(fmap,files):
             lines=f.read().splitlines()
             for line in lines:
                 for fname in list(fmap.keys()):
-                    pattern=fname+"(.*)"
+                    pattern=fname+r"(.*)"
                     if(not re.search(pattern,line)):
                         continue
                     if(len(line.split("def "))>1):
