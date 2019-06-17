@@ -24,3 +24,18 @@ class Files:
             return True
         self.all_files=self.meta[:]
         return False
+
+def show_output(fmap,output_type):
+    
+    if(output_type=='terminal'):    
+
+        for k in fmap.keys():
+            func=fmap[k]
+            print(func.name)
+            print(" "*4,func.path)
+            print(" "*4,func.definition)
+            for c in func.callers:
+                print(" "*8,"-->",c)
+    
+    if(out_type=='csv'):
+
