@@ -37,5 +37,13 @@ def show_output(fmap,output_type):
             for c in func.callers:
                 print(" "*8,"-->",c)
     
-    if(out_type=='csv'):
-
+    if(output_type=='csv'):
+        f=open("output.csv","w+")
+        for k in fmap.keys():
+            func=fmap[k]
+            s=func.name+","+func.definition+","+func.path
+            for c in func.callers:
+                s+= ","+c
+            s+="\n" 
+            f.write(s)
+        f.close()
